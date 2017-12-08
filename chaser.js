@@ -185,8 +185,8 @@ function updateScene() {
       new Enemy(
         getRandomPosition(),
         getRandomPosition(),
-        40,
-        40,
+        enemySpriteWidth,
+        enemySpriteWidth,
         enemies[enemies.length - 1].speed + 0.01
       )
     );
