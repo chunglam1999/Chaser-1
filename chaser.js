@@ -5,10 +5,18 @@ const progressBar = document.querySelector("progress");
 const enemySpriteURL =
   "http://clipartix.com/wp-content/uploads/2016/05/Chicken-clipart-black-and-white-free-clipart-images.png";
 const playerSpriteURL =
-  "https://i.pinimg.com/originals/e6/ca/0d/e6ca0db4d941220ff21e96399c99b475.png";
+  "http://i.pinimg.com/originals/e6/ca/0d/e6ca0db4d941220ff21e96399c99b475.png";
 const powerUpSpriteURL =
-  "https://freeclipartimage.com//storage/upload/egg-clip-art/egg-clip-art-2.png";
-const backgroundURL = "https://i.imgur.com/bTgbcZR.png";
+  "http://freeclipartimage.com//storage/upload/egg-clip-art/egg-clip-art-2.png";
+const backgroundURL = "http://i.imgur.com/bTgbcZR.png";
+
+const enemySpriteWidth = 40;
+const playerSpriteWidth = 80;
+const powerUpSpriteWidth = 24;
+const powerUpSpriteHeight = 30;
+const enemyBaseSpeed = 0.005;
+const playerSpeed = 0.1;
+const powerUpSpeed = -0.001;
 
 let paused = false;
 let secondsElapsed = 0;
@@ -16,27 +24,6 @@ let mostRecentTime = 0;
 let level = 1;
 let score = 0;
 let highScore = 0;
-
-document.body.onkeyup = function(e) {
-  if (e.keyCode == 32) {
-    paused = !paused;
-    if (!paused) {
-      requestAnimationFrame(drawScene);
-    }
-  }
-};
-
-setInterval(function() {
-  if (!paused) {
-    secondsElapsed++;
-    score += 2;
-    if (level > 1 && secondsElapsed % 8 === 0) {
-      powerUps.push(
-        new PowerUp(getRandomPosition(), getRandomPosition(), 24, 30, -0.001)
-      );
-    }
-  }
-}, 1000);
 
 function getRandomPosition() {
   return Math.floor(Math.random() * canvas.width + 1);
@@ -48,20 +35,6 @@ function distanceBetween(sprite1, sprite2) {
 
 function haveCollided(sprite1, sprite2) {
   return distanceBetween(sprite1, sprite2) < sprite1.radius + sprite2.radius;
-}
-
-function pushOff(sprite1, sprite2) {
-  let [dx, dy] = [sprite2.x - sprite1.x, sprite2.y - sprite1.y];
-  const L = Math.hypot(dx, dy);
-  let distToMove = sprite1.radius + sprite1.radius - L;
-  if (distToMove > 0) {
-    dx /= L;
-    dy /= L;
-    sprite1.x -= dx * distToMove / 2;
-    sprite1.y -= dy * distToMove / 2;
-    sprite2.x += dx * distToMove / 2;
-    sprite2.y += dy * distToMove / 2;
-  }
 }
 
 class Sprite {
@@ -82,7 +55,13 @@ class Player extends Sprite {
   }
 }
 
-let player = new Player(150, 150, 80, 80, 0.1);
+let player = new Player(
+  canvas.width / 2,
+  canvas.height / 2,
+  playerSpriteWidth,
+  playerSpriteWidth,
+  playerSpeed
+);
 
 class Enemy extends Sprite {
   constructor(x, y, width, height, speed) {
@@ -97,9 +76,27 @@ class Enemy extends Sprite {
 }
 
 let enemies = [
-  new Enemy(80, 200, 40, 40, 0.025),
-  new Enemy(200, 250, 40, 40, 0.01),
-  new Enemy(150, 180, 40, 40, 0.005)
+  new Enemy(
+    getRandomPosition(),
+    getRandomPosition(),
+    enemySpriteWidth,
+    enemySpriteWidth,
+    0.025
+  ),
+  new Enemy(
+    getRandomPosition(),
+    getRandomPosition(),
+    enemySpriteWidth,
+    enemySpriteWidth,
+    0.01
+  ),
+  new Enemy(
+    getRandomPosition(),
+    getRandomPosition(),
+    enemySpriteWidth,
+    enemySpriteWidth,
+    enemyBaseSpeed
+  )
 ];
 
 class PowerUp extends Sprite {
@@ -129,6 +126,38 @@ function follow(target, chaser, speed) {
   chaser.y += (target.y - chaser.y) * speed;
 }
 
+function pushOff(sprite1, sprite2) {
+  let [dx, dy] = [sprite2.x - sprite1.x, sprite2.y - sprite1.y];
+  const L = Math.hypot(dx, dy);
+  let distToMove = sprite1.radius + sprite1.radius - L;
+  if (distToMove > 0) {
+    dx /= L;
+    dy /= L;
+    sprite1.x -= dx * distToMove / 2;
+    sprite1.y -= dy * distToMove / 2;
+    sprite2.x += dx * distToMove / 2;
+    sprite2.y += dy * distToMove / 2;
+  }
+}
+
+setInterval(function() {
+  if (!paused) {
+    secondsElapsed++;
+    score += 2;
+    if (level > 1 && secondsElapsed % 8 === 0) {
+      powerUps.push(
+        new PowerUp(
+          getRandomPosition(),
+          getRandomPosition(),
+          powerUpSpriteWidth,
+          powerUpSpriteHeight,
+          powerUpSpeed
+        )
+      );
+    }
+  }
+}, 1000);
+
 function updateScene() {
   follow(mouse, player, player.speed);
   enemies.forEach(enemy => follow(player, enemy, enemy.speed));
@@ -137,11 +166,11 @@ function updateScene() {
       progressBar.value -= 0.1;
     }
   });
-  for (let i = 0; i < enemies.length; i+=1) {
-    for (let j = i+1; j < enemies.length; j += 1) {
+  for (let i = 0; i < enemies.length; i += 1) {
+    for (let j = i + 1; j < enemies.length; j += 1) {
       pushOff(enemies[i], enemies[j]);
     }
-  };
+  }
   powerUps.forEach(powerUp => follow(player, powerUp, powerUp.speed));
   powerUps.forEach(powerUp => {
     if (haveCollided(powerUp, player)) {
@@ -186,7 +215,37 @@ function startGame() {
   }
 }
 
+document.body.onkeyup = function(e) {
+  if (e.keyCode == 32) {
+    paused = !paused;
+    if (!paused) {
+      requestAnimationFrame(drawScene);
+    }
+  }
+};
+
+function drawPaused() {
+  ctx.fillStyle = "white";
+  ctx.globalAlpha = 0.4;
+  ctx.fillRect(0, canvas.height / 4, canvas.width, canvas.height / 2);
+  ctx.globalAlpha = 1.0;
+  ctx.fillStyle = "black";
+  ctx.textAlign = "center";
+  ctx.font = "60px Jokerman";
+  ctx.fillText("- PAUSED -", canvas.width / 2, canvas.height / 2);
+  ctx.font = "20px Jokerman";
+  ctx.fillText(
+    "Hit spacebar again to resume.",
+    canvas.width / 2,
+    canvas.height * 2 / 3
+  );
+}
+
 function drawGameOver() {
+  ctx.fillStyle = "white";
+  ctx.globalAlpha = 0.4;
+  ctx.fillRect(0, canvas.height / 8, canvas.width, canvas.height * 3 / 4);
+  ctx.globalAlpha = 1.0;
   ctx.fillStyle = "black";
   ctx.textAlign = "center";
   ctx.font = "60px Jokerman";
@@ -223,19 +282,6 @@ function drawGameOver() {
       canvas.height * 2 / 3 + 25
     );
   }
-}
-
-function drawPaused() {
-  ctx.fillStyle = "black";
-  ctx.textAlign = "center";
-  ctx.font = "60px Jokerman";
-  ctx.fillText("- PAUSED -", canvas.width / 2, canvas.height / 2);
-  ctx.font = "20px Jokerman";
-  ctx.fillText(
-    "Hit spacebar again to resume.",
-    canvas.width / 2,
-    canvas.height * 2 / 3
-  );
 }
 
 function clearBackground() {
