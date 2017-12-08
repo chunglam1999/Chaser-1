@@ -6,9 +6,9 @@ canvas {
 h1 {
   font: 60px "Jokerman";
   color: darkSeaGreen;
-  padding: 10px;
-  background-color: rgb(9, 63, 2);
   text-align: center;
+  background-color: rgb(9, 63, 2);
+  padding: 10px;
   margin-bottom: 10px;
   margin-top: 0px;
 }
@@ -25,9 +25,9 @@ h2 {
 
 h3 {
   font: 30px "Bernard MT Condensed";
+  color: white;
   text-align: center;
   background-color: rgba(9, 63, 2, 0.66);
-  color: white;
   padding: 10px;
   margin-bottom: 0px;
   margin-top: 0px;
@@ -35,12 +35,19 @@ h3 {
 
 h4 {
   font: 30px "Bauhaus 93";
+  color: rgb(22, 89, 45);
+  background-color: rgb(188, 214, 195);
+  padding-left: 10px;
   margin-bottom: 0px;
-  margin-top: 0px;  
+  margin-top: 0px;
 }
 
 h5 {
   font: 25px "Bernard MT Condensed";
+  color: rgb(22, 89, 45);
+  background-color: rgb(188, 214, 195);
+  padding-left: 10px;
+  padding-bottom: 5px;
   margin-bottom: 0px;
   margin-top: 0px;
 }
