@@ -1,4 +1,61 @@
 canvas {
-  border: 1px solid blue;
-  margin: 20px;
+  border: 1px solid darkGreen;
+  margin-top: 20px;
+}
+
+h1 {
+  font: 60px "Jokerman";
+  color: darkSeaGreen;
+  padding: 10px;
+  background-color: rgb(9, 63, 2);
+  text-align: center;
+  margin-bottom: 10px;
+  margin-top: 0px;
+}
+
+h2 {
+  font: 40px "Bauhaus 93";
+  color: white;
+  text-align: center;
+  background-color: rgb(26, 104, 17);
+  padding: 10px;
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
+
+h3 {
+  font: 30px "Bernard MT Condensed";
+  text-align: center;
+  background-color: rgba(9, 63, 2, 0.66);
+  color: white;
+  padding: 10px;
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
+
+h4 {
+  font: 30px "Bauhaus 93";
+  margin-bottom: 0px;
+  margin-top: 0px;  
+}
+
+h5 {
+  font: 25px "Bernard MT Condensed";
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
+
+p {
+  font: 20px "Bernard MT Condensed";
+  margin-bottom: 15px;
+  margin-top: 5px;
+}
+
+progress {
+  width: 300px;
+  margin-top: 0px;
+}
+
+body {
+  padding-left: 20px;
 }
