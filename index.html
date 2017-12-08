@@ -1,11 +1,20 @@
 <!doctype html>
 <html>
   <head>
+    <title>Dinosaur Chaser Game</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="chaser.css">
   </head>
   <body>
-    <h1>Chaser</h1>
+    <h3>The Ultimate</h3>
+    <h2>DINOSAUR</h2>
+    <h1><img src="http://www.clker.com/cliparts/0/Y/F/K/S/Z/green-t-rex-silhouette-md.png" style="float:left;width:63px;height:75px;">Chaser Game<img src="http://www.clker.com/cliparts/0/Y/F/K/S/Z/green-t-rex-silhouette-md.png" style="float:right;width:63px;height:75px;"></h1>
+    <p>Timmy the tiny-armed T-Rex keeps tripping over evil chickens. Every time he trips over a chicken his health goes down, but those darn chickens keep reproducing!</p>
+    <p>Help Timmy the T-Rex stay on his feet by avoiding the chickens for as long as you can and squashing their eggs when they appear. Move your mouse across the screen to move Timmy around.</p>
+    <p>To pause at any time, press the <strong>spacebar</strong>.</p>
+    <h4>LEVEL <span id="level"></span> -- SCORE: <span id="score"></span> -- HIGH SCORE: <span id ="highScore"></span></h4>
+    <h4>Health: <progress max=100 value=100></progress> <span id="healthPercent"></span>%</h4>
+    <h5>You have survived for <span id="timeElapsed"></span> seconds</h5>
     <canvas width="800" height="800"></canvas>
     <script src="chaser.js"></script>
   </body>
